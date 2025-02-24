@@ -14,7 +14,7 @@
     "lerna": "^8.1.9",
     "prettier": "^3.5.1",
     "tsc-watch": "^6.2.1",
-    "typescript": "5.7.2"
+    "typescript": "5.7.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
