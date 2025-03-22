@@ -3,7 +3,7 @@
 
 <div align="center">
 
-![txtdot logo](https://github.com/TxtDot/.github/raw/main/imgs/txtdot.png)
+![txtdot logo](https://github.com/TempoWorks/.github/raw/main/imgs/txtdot.png)
 
 <a href="https://txtdot.github.io/documentation"><img alt="Documentation" src="https://img.shields.io/badge/Documentation-blue"></a>
 <a href="https://github.com/TxtDot/instances"><img alt="Instances" src="https://img.shields.io/badge/Instances-blue"></a>
