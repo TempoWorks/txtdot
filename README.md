@@ -5,11 +5,11 @@
 
 ![txtdot logo](https://github.com/TempoWorks/.github/raw/main/imgs/txtdot.png)
 
-<a href="https://txtdot.github.io/documentation"><img alt="Documentation" src="https://img.shields.io/badge/Documentation-blue"></a>
-<a href="https://github.com/TxtDot/instances"><img alt="Instances" src="https://img.shields.io/badge/Instances-blue"></a>
+<a href="https://tempoworks.github.io/documentation"><img alt="Documentation" src="https://img.shields.io/badge/Documentation-blue"></a>
+<a href="https://github.com/tempoworks/instances"><img alt="Instances" src="https://img.shields.io/badge/Instances-blue"></a>
 <br>
-<a href="https://github.com/TxtDot/txtdot/blob/main/LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/txtdot/txtdot?color=blue"></a>
-<a href="https://github.com/TxtDot/txtdot/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/TxtDot/txtdot?display_name=release"></a>
+<a href="https://github.com/tempoworks/txtdot/blob/main/LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/tempoworks/txtdot?color=blue"></a>
+<a href="https://github.com/tempoworks/txtdot/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/tempoworks/txtdot?display_name=release"></a>
 
 # txtdot
 
@@ -24,12 +24,12 @@ Mozilla's Readability library is used under the hood.
 - Server-side page simplification
 - Media proxy
 - Image compression with Sharp
-- Rendering client-side apps (Vanilla, React, Vue, etc) with [webder](https://github.com/TxtDot/webder)
+- Rendering client-side apps (Vanilla, React, Vue, etc) with [webder](https://github.com/tempoworks/webder)
 - Search with SearXNG
 - Handy API endpoints
 - No client JavaScript
 - Some kind of Material Design 3
-- Customization with plugins, see [@txtdot/sdk](https://github.com/TxtDot/txtdot/tree/main/packages/sdk) and [@txtdot/plugins](https://github.com/TxtDot/txtdot/tree/main/packages/plugins)
+- Customization with plugins, see [@txtdot/sdk](https://github.com/tempoworks/txtdot/tree/main/packages/sdk) and [@txtdot/plugins](https://github.com/tempoworks/txtdot/tree/main/packages/plugins)
 
 ## Running
 
@@ -57,8 +57,8 @@ docker compose up -d
 ## Screenshots
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/TxtDot/.github/main/imgs/ui_url_input.png" alt="Main page with URL input field">
-<img src="https://raw.githubusercontent.com/TxtDot/.github/main/imgs/ui_search_page.png" alt="SearXNG search results page">
+<img src="https://raw.githubusercontent.com/tempoworks/.github/main/imgs/ui_url_input.png" alt="Main page with URL input field">
+<img src="https://raw.githubusercontent.com/tempoworks/.github/main/imgs/ui_search_page.png" alt="SearXNG search results page">
 </div>
 
 ## Performance tests
@@ -82,20 +82,20 @@ between original page and proxied one.
 | [Nginx Blog][nginx-link] Mobile  | ![26%][nginx-mo-img]  | ![100%][nginx-mt-img]  |
 
 [habr-link]: https://habr.com/ru/articles/780692/
-[habr-do-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/habr/desktop_orig.png
-[habr-dt-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/habr/desktop_txtdot.png
-[habr-mo-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/habr/mobile_orig.png
-[habr-mt-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/habr/mobile_txtdot.png
+[habr-do-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/habr/desktop_orig.png
+[habr-dt-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/habr/desktop_txtdot.png
+[habr-mo-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/habr/mobile_orig.png
+[habr-mt-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/habr/mobile_txtdot.png
 [medium-link]: https://levelup.gitconnected.com/proxy-servers-how-proxies-work-0ec083fc1030
-[medium-do-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/medium/desktop_orig.png
-[medium-dt-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/medium/desktop_txtdot.png
-[medium-mo-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/medium/mobile_orig.png
-[medium-mt-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/medium/mobile_txtdot.png
+[medium-do-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/medium/desktop_orig.png
+[medium-dt-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/medium/desktop_txtdot.png
+[medium-mo-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/medium/mobile_orig.png
+[medium-mt-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/medium/mobile_txtdot.png
 [nginx-link]: https://www.nginx.com/blog/rate-limiting-nginx/
-[nginx-do-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/nginx-blog/desktop_orig.png
-[nginx-dt-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/nginx-blog/desktop_txtdot.png
-[nginx-mo-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/nginx-blog/mobile_orig.png
-[nginx-mt-img]: https://raw.githubusercontent.com/TxtDot/.github/main/tests/nginx-blog/mobile_txtdot.png
+[nginx-do-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/nginx-blog/desktop_orig.png
+[nginx-dt-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/nginx-blog/desktop_txtdot.png
+[nginx-mo-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/nginx-blog/mobile_orig.png
+[nginx-mt-img]: https://raw.githubusercontent.com/tempoworks/.github/main/tests/nginx-blog/mobile_txtdot.png
 
 </details>
 
