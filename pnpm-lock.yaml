@@ -36,8 +36,8 @@ importers:
   packages/plugins:
     dependencies:
       '@mozilla/readability':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       '@txtdot/sdk':
         specifier: workspace:*
         version: link:../sdk
@@ -417,8 +417,8 @@ packages:
     resolution: {integrity: sha512-9I2Zn6+NJLfaGoz9jN3lpwDgAYvfGeNYdbAIjJOqzs4Tpc+VU3Jqq4IofSUBKajiDS8k9fZIg18/z13mpk1bsA==}
     engines: {node: '>=8'}
 
-  '@mozilla/readability@0.5.0':
-    resolution: {integrity: sha512-Z+CZ3QaosfFaTqvhQsIktyGrjFjSC0Fa4EMph4mqKnWhmyoGICsV/8QK+8HpXut6zV7zwfWwqDmEjtk1Qf6EgQ==}
+  '@mozilla/readability@0.6.0':
+    resolution: {integrity: sha512-juG5VWh4qAivzTAeMzvY9xs9HY5rAcr2E4I7tiSSCokRFi7XIZCAu92ZkSTsIj1OPceCifL3cpfteP3pDT9/QQ==}
     engines: {node: '>=14.0.0'}
 
   '@napi-rs/wasm-runtime@0.2.4':
@@ -3662,7 +3662,7 @@ snapshots:
 
   '@lukeed/ms@2.0.2': {}
 
-  '@mozilla/readability@0.5.0': {}
+  '@mozilla/readability@0.6.0': {}
 
   '@napi-rs/wasm-runtime@0.2.4':
     dependencies:
