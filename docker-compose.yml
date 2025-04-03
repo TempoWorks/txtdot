@@ -2,7 +2,7 @@ version: '3'
 
 services:
   txtdot:
-    image: ghcr.io/txtdot/txtdot:latest
+    image: ghcr.io/tempoworks/txtdot:latest
     ports:
       - '8080:8080'
     restart: unless-stopped
