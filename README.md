@@ -1,6 +1,6 @@
 <div align="center">
 
-![txtdot logo](https://github.com/TempoWorks/.github/raw/main/imgs/txtdotv2.png)
+<img alt="txtdotv2 logo" src="https://github.com/TempoWorks/.github/raw/main/imgs/txtdotv2.png" width='256'>
 
 <a href="https://tempoworks.github.io/documentation"><img alt="Documentation" src="https://img.shields.io/badge/Documentation-blue"></a>
 <a href="https://github.com/tempoworks/instances"><img alt="Instances" src="https://img.shields.io/badge/Instances-blue"></a>
