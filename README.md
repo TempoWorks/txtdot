@@ -1,5 +1,5 @@
 > [!WARNING]
-> The project is frozen for a while. txtdot needs a complete rewrite in rust and dalet integration, which is not finished yet.
+> V1 version development is discontinued. Check current development on [v2 branch](https://github.com/TempoWorks/txtdot/tree/v2)
 
 <div align="center">
 
