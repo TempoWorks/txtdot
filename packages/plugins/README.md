@@ -1,3 +1,0 @@
-# plugins
-
-txtdot official plugins
