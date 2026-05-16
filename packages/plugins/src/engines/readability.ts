@@ -11,14 +11,15 @@ Readability.route('*path', async (input, ro: Route<{ path: string }>) => {
   const reader = new OReadability(input.document.cloneNode(true) as Document);
   const parsed = reader.parse();
 
-  if (!parsed) {
+  if (!parsed || !parsed.content) {
     throw new EngineParseError(`(${ro.q.path}). [${Readability.name}]`);
   }
 
   return {
     content: parsed.content,
-    title: parsed.title,
-    lang: parsed.lang,
+    textContent: parsed.textContent ?? undefined,
+    title: parsed.title ?? undefined,
+    lang: parsed.lang ?? undefined,
   };
 });
 
