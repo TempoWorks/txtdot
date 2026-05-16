@@ -1,5 +1,10 @@
-name: build-check
+name: Check build
+
+permissions:
+  contents: read
+
 on: pull_request
+
 jobs:
   build-check:
     runs-on: ubuntu-latest

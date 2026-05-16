@@ -1,5 +1,8 @@
 name: Delete untagged packages
 
+permissions:
+  packages: write
+
 on:
   workflow_run:
     workflows:
