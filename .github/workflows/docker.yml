@@ -1,5 +1,9 @@
 name: Create and publish a Docker image
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   push:
     branches:
