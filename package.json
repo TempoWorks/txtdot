@@ -8,10 +8,10 @@
   },
   "devDependencies": {
     "@types/node": "^22.13.4",
-    "@typescript-eslint/eslint-plugin": "^8.24.0",
-    "@typescript-eslint/parser": "^8.24.0",
-    "eslint": "^9.20.1",
-    "lerna": "^8.1.9",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
+    "eslint": "^10.4.0",
+    "lerna": "^9.0.7",
     "prettier": "^3.5.1",
     "tsc-watch": "^6.2.1",
     "typescript": "5.7.2"

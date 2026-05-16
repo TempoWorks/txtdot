@@ -1,7 +1,7 @@
 export function generateRequestUrl(
   protocol: string,
   host: string,
-  port: number,
+  port: number | null,
   originalUrl: string
 ): URL {
   return new URL(
