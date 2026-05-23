@@ -46,8 +46,8 @@ export default function replaceHref(
           // split src by space
           const parts = src.trim().split(' ');
           try {
-            // first part is URL
-            // (srcset="http 200w 1x,...")
+            // first part is URL:
+            // srcset="http://abc 200w 1x, ..."
             parts[0] = proxyUrl(parts[0]);
           } catch (_err) {
             /* empty */
@@ -55,7 +55,7 @@ export default function replaceHref(
           // join by space after splitting
           return parts.join(' ');
         })
-        .join(','); // join by comma
+        .join(', '); // join by comma with space
     }
   }
 }

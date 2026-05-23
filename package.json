@@ -8,10 +8,10 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@types/node": "^22.19.19",
+    "@types/node": "^25.8.0",
     "prettier": "^3.8.3",
-    "tsc-watch": "^6.3.1",
-    "typescript": "5.7.2"
+    "tsc-watch": "^7.2.0",
+    "typescript": "6.0.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
