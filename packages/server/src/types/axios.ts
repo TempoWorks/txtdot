@@ -2,7 +2,6 @@ import origAxios, { CreateAxiosDefaults } from 'axios';
 import { isLocalResource, isLocalResourceURL } from '../utils/islocal';
 import { LocalResourceError } from '../errors/main';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const config: CreateAxiosDefaults<any> = {
   headers: {
     'User-Agent':
