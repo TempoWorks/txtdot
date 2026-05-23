@@ -16,7 +16,6 @@ export class Middleware {
   name: string;
   description: string;
   domains: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   middles: IMiddle<any>[] = [];
   constructor(name: string, description: string, domains: string[] = []) {
     this.domains = domains;

@@ -1,28 +1,23 @@
-FROM node:23-alpine AS base
+FROM node:24-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN \
-  npm i -g corepack@latest \
-  corepack enable \
-  corepack use pnpm@latest-10 
-COPY . /app
+RUN corepack enable
 WORKDIR /app
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/server/package.json packages/server/package.json
+COPY packages/plugins/package.json packages/plugins/package.json
+COPY packages/sdk/package.json packages/sdk/package.json
 
 FROM base AS prod-deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
 FROM base AS build
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+COPY . .
 RUN pnpm run build
 
-FROM node:23-alpine AS run
+FROM node:24-alpine AS run
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN \
-  npm i -g corepack@latest \
-  corepack enable \
-  corepack use pnpm@latest-10
 WORKDIR /app
 
 COPY --from=prod-deps /app/node_modules /app/node_modules
@@ -40,5 +35,5 @@ COPY --from=build /app/packages/plugins/package.json /app/packages/plugins
 COPY --from=build /app/packages/server/package.json /app/packages/server
 
 EXPOSE 8080
-WORKDIR /app/packages/server
-CMD [ "pnpm", "start" ]
+WORKDIR /app/packages/server/dist
+CMD [ "node", "./src/app.js" ]

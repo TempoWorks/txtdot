@@ -1,5 +1,4 @@
 packages:
   - 'packages/*'
 allowBuilds:
-  nx: true
   sharp: true

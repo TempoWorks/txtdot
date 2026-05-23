@@ -34,7 +34,6 @@ export default async function configurationRoute(fastify: FastifyInstance) {
           return {
             ...engine,
             routes: engine.routes.map((route) => {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               return (route.route as any).spec;
             }),
           };
@@ -43,7 +42,6 @@ export default async function configurationRoute(fastify: FastifyInstance) {
           return {
             ...middleware,
             routes: middleware.middles.map((middle) => {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               return (middle.route as any).spec;
             }),
             middles: undefined,

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-namespace */
 export namespace JSX {
   export type Element = string;
   export interface IntrinsicElements {
