@@ -1,6 +1,6 @@
 {
   "name": "@txtdot/server",
-  "version": "1.10.4",
+  "version": "1.10.5",
   "private": true,
   "description": "txtdot is an HTTP proxy that parses only text, links and pictures from pages reducing internet bandwidth usage, removing ads and heavy scripts",
   "main": "dist/app.js",
