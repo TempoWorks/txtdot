@@ -17,12 +17,6 @@ RUN pnpm run build
 
 FROM node:23-alpine AS run
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN \
-  npm i -g corepack@latest \
-  corepack enable \
-  corepack use pnpm@latest-10
 WORKDIR /app
 
 COPY --from=prod-deps /app/node_modules /app/node_modules
@@ -40,5 +34,5 @@ COPY --from=build /app/packages/plugins/package.json /app/packages/plugins
 COPY --from=build /app/packages/server/package.json /app/packages/server
 
 EXPOSE 8080
-WORKDIR /app/packages/server
-CMD [ "pnpm", "start" ]
+WORKDIR /app/packages/server/dist
+CMD [ "node", "./src/app.js" ]
