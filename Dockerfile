@@ -1,4 +1,4 @@
-FROM node:23-alpine AS base
+FROM node:24-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -16,7 +16,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm run build
 
-FROM node:23-alpine AS run
+FROM node:24-alpine AS run
 
 WORKDIR /app
 

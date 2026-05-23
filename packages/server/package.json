@@ -31,7 +31,7 @@
     "fastify": "^5.8.5",
     "iconv-lite": "^0.6.3",
     "ip-range-check": "^0.2.0",
-    "isomorphic-dompurify": "^2.21.0",
+    "isomorphic-dompurify": "^3.14.0",
     "json-schema-to-ts": "^3.1.1",
     "linkedom": "^0.18.9",
     "micromatch": "^4.0.8",
