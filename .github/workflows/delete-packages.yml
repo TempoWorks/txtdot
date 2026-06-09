@@ -1,0 +1,24 @@
+name: Delete untagged packages
+
+permissions:
+  packages: write
+
+on:
+  workflow_run:
+    workflows:
+      - Check build
+      - Create and publish a Docker image
+      - Check code formatting
+    types:
+      - completed
+
+jobs:
+  delete-untagged-packages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -25,10 +25,10 @@
     <tspan x="35" y="129.091">v{{ version }}</tspan>
   </text>
   <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="900" letter-spacing="0em">
-    <tspan x="81" y="205.091">Engines: {{ engines_count }}</tspan>
+    <tspan x="81" y="205.091">Inputs: {{ inputs_count }}</tspan>
   </text>
   <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="900" letter-spacing="0em">
-    <tspan x="277" y="205.091">Middlewares: {{ middlewares_count }}</tspan>
+    <tspan x="277" y="205.091">Outputs: {{ outputs_count }}</tspan>
   </text>
   <defs>
     <clipPath id="clip0_2_2">

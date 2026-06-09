@@ -14,8 +14,7 @@ pub struct Config {
     pub third_party: ThirdPartyConfig,
 }
 
-pub const DESCRIPTION: &str =
-    "HTTP proxy that parses only text, links and pictures from pages";
+pub const DESCRIPTION: &str = "HTTP proxy that parses only text, links and pictures from pages";
 
 #[derive(Clone, Serialize)]
 pub struct ProxyConfig {
@@ -26,7 +25,6 @@ pub struct ProxyConfig {
 #[derive(Clone, Serialize)]
 pub struct ThirdPartyConfig {
     pub searx_url: Option<String>,
-    pub webder_url: Option<String>,
 }
 
 impl Config {
@@ -49,8 +47,9 @@ impl Config {
             swagger: env_bool("SWAGGER", false),
             search_by_default: env_bool("SEARCH_BY_DEFAULT", false),
             third_party: ThirdPartyConfig {
-                searx_url: env::var("SEARX_URL").ok(),
-                webder_url: env::var("WEBDER_URL").ok(),
+                searx_url: env::var("SEARX_URL")
+                    .ok()
+                    .filter(|value| !value.trim().is_empty()),
             },
         }
     }

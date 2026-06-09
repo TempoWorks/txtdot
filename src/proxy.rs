@@ -54,7 +54,10 @@ pub async fn proxy_img(Query(params): Query<ProxyParams>) -> Result<Response, Ap
 
     if mime.starts_with("image/svg") {
         let mut headers = HeaderMap::new();
-        headers.insert(header::CONTENT_TYPE, HeaderValue::from_static("image/svg+xml"));
+        headers.insert(
+            header::CONTENT_TYPE,
+            HeaderValue::from_static("image/svg+xml"),
+        );
         headers.insert(
             header::CONTENT_LENGTH,
             HeaderValue::from_str(&bytes.len().to_string())
@@ -63,8 +66,8 @@ pub async fn proxy_img(Query(params): Query<ProxyParams>) -> Result<Response, Ap
         return Ok((headers, bytes).into_response());
     }
 
-    let image = image::load_from_memory(&bytes)
-        .map_err(|error| AppError::Upstream(error.to_string()))?;
+    let image =
+        image::load_from_memory(&bytes).map_err(|error| AppError::Upstream(error.to_string()))?;
     let compressed = encode_webp(&image)?;
 
     let mut headers = HeaderMap::new();
@@ -115,10 +118,13 @@ pub fn rewrite_html_links(
                 rewrite_attr(el, "src", &parser_url);
                 Ok(())
             }))
-            .append_element_content_handler(element!("video[src], audio[src], embed[src], track[src], source[src]", move |el| {
-                rewrite_attr(el, "src", &proxied_url);
-                Ok(())
-            }))
+            .append_element_content_handler(element!(
+                "video[src], audio[src], embed[src], track[src], source[src]",
+                move |el| {
+                    rewrite_attr(el, "src", &proxied_url);
+                    Ok(())
+                }
+            ))
             .append_element_content_handler(element!("object[data]", move |el| {
                 rewrite_attr(el, "data", &proxied_url);
                 Ok(())
@@ -173,7 +179,9 @@ fn parser_url(request: &Url, remote: &Url, href: &str) -> Option<String> {
 
 fn proxy_url(request: &Url, remote: &Url, href: &str, img: bool) -> Option<String> {
     let resolved = remote.join(href).ok()?;
-    let mut url = request.join(if img { "/proxy/img" } else { "/proxy" }).ok()?;
+    let mut url = request
+        .join(if img { "/proxy/img" } else { "/proxy" })
+        .ok()?;
     url.query_pairs_mut().append_pair("url", resolved.as_str());
     Some(url.to_string())
 }

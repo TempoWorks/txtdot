@@ -3,94 +3,186 @@
 }
 
 :root {
-  --bg: #fdfbff;
-  --fg: #1a1c1e;
-
-  --outline: #74777f;
-
-  --accent: #255fa4;
-  --accent-hl: #003060;
-
-  --btn-hl: #4178c1;
-  --btn2-hl: rgba(189, 199, 220, 0.5);
-
-  --error: #ff897d;
+  color-scheme: light;
+  --background: #fafafa;
+  --foreground: #111827;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --surface: #ffffff;
+  --border: #e4e4e7;
+  --input: #d4d4d8;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --accent: #0f766e;
+  --accent-foreground: #f0fdfa;
+  --ring: #0f766e;
+  --destructive: #b91c1c;
+  --radius: 0.5rem;
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1a1c1e;
-    --fg: #e3e2e6;
-
-    --outline: #8e9199;
-
-    --accent: #a6c8ff;
-    --accent-hl: #d6e3ff;
-
-    --btn-hl: #79adf9;
-    --btn2-hl: rgba(189, 199, 220, 0.2);
-
-    --error: #ffb4ab;
+    color-scheme: dark;
+    --background: #09090b;
+    --foreground: #fafafa;
+    --muted: #18181b;
+    --muted-foreground: #a1a1aa;
+    --surface: #111113;
+    --border: #27272a;
+    --input: #3f3f46;
+    --primary: #fafafa;
+    --primary-foreground: #18181b;
+    --accent: #2dd4bf;
+    --accent-foreground: #042f2e;
+    --ring: #2dd4bf;
+    --destructive: #f87171;
+    --shadow: none;
   }
 }
 
+html {
+  min-height: 100%;
+}
+
 body {
+  min-height: 100vh;
   margin: 0;
-  padding: 0.5rem;
-
-  background: var(--bg);
-  color: var(--fg);
-
-  font-family: 'Noto Sans', 'Cantarell', 'Roboto', system-ui, sans-serif;
-  font-size: 1.1rem;
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.09), transparent 28rem),
+    var(--background);
+  color: var(--foreground);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-size: 1rem;
+  line-height: 1.55;
 }
 
 main {
-  max-width: 50rem;
-  width: 100%;
-  margin: auto;
+  width: min(100% - 2rem, 58rem);
+  margin: 0 auto;
+  padding: 2rem 0;
 }
 
-.menu {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-  align-items: flex-start;
+header {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.button {
-  padding: 0.25rem 1rem;
+h1,
+h2,
+p {
+  margin: 0;
+}
 
-  border: none;
-  border-radius: 1rem;
+h1 {
+  font-size: clamp(3rem, 12vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: 0;
+  font-weight: 800;
+}
 
-  background: var(--accent);
-  color: var(--bg);
-
-  text-decoration: none;
+h2 {
   font-size: 1rem;
-
-  cursor: pointer;
-
-  transition: background-color 0.15s ease-out;
-}
-
-.button:hover {
-  background: var(--btn-hl);
-}
-
-.button.secondary {
-  background: var(--bg);
-  color: var(--fg);
-
-  border: 1px solid var(--outline);
-}
-
-.button.secondary:hover {
-  background: var(--btn2-hl);
+  line-height: 1.2;
+  font-weight: 700;
 }
 
 a {
+  color: var(--accent);
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.dot {
+  color: var(--accent);
+}
+
+.menu,
+.actions,
+.route-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.button {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 0.45rem 0.9rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.button.secondary {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+}
+
+.button.secondary:hover {
+  border-color: var(--input);
+  background: var(--muted);
+}
+
+pre {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  background: var(--muted);
+  color: var(--foreground);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 42rem) {
+  main {
+    width: min(100% - 1rem, 58rem);
+    padding: 1rem 0;
+  }
+
+  .button {
+    white-space: normal;
+  }
 }

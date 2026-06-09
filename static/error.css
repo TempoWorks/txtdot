@@ -1,0 +1,32 @@
+.error-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.error-panel {
+  width: min(100%, 32rem);
+  display: grid;
+  gap: 1rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 0.25rem);
+  padding: 1.25rem;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow {
+  color: var(--destructive);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.error-panel h1 {
+  color: var(--destructive);
+}
+
+.error-message {
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+}

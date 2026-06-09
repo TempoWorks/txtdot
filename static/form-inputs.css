@@ -1,20 +1,26 @@
-input[type='text'],
+input[type="text"],
 select {
-  outline: 0;
-  border: 0;
-  border-bottom: 1px var(--outline) solid;
-  padding: 0.25rem 0.25rem;
-
-  background: var(--bg);
-  color: var(--fg);
-  font-size: 1rem;
-
   width: 100%;
-
-  transition: border-bottom 0.25s ease-out;
+  min-height: 2.25rem;
+  border: 1px solid var(--input);
+  border-radius: var(--radius);
+  padding: 0.45rem 0.7rem;
+  background: var(--surface);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.95rem;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-input[type='text']:focus,
+input[type="text"]::placeholder {
+  color: var(--muted-foreground);
+}
+
+input[type="text"]:focus,
 select:focus {
-  border-bottom-color: var(--accent);
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
+  outline: none;
 }

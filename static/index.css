@@ -1,20 +1,18 @@
 main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: 100vh;
+  display: grid;
+  align-content: center;
+  justify-items: center;
   text-align: center;
 }
 
-h1 {
-  width: fit-content;
-  margin: auto;
+header {
+  justify-items: center;
 }
 
-h1 > .dot {
-  color: var(--accent);
-}
-h1 > .dot-err {
-  color: var(--error);
+header p {
+  max-width: 34rem;
+  color: var(--muted-foreground);
 }
 
 .menu {

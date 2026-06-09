@@ -1,13 +1,13 @@
 use axum::{
     http::StatusCode,
-    response::{IntoResponse, Response},
-    Json,
+    response::{Html, IntoResponse, Response},
 };
-use serde_json::json;
+use tera::Context;
 
 pub enum AppError {
     Drova(drova_sdk::requester::Error),
     BadRequest(String),
+    NotFound(String),
     Upstream(String),
 }
 
@@ -22,16 +22,17 @@ impl IntoResponse for AppError {
         let (status, message) = match self {
             AppError::Drova(error) => (StatusCode::BAD_GATEWAY, format!("{error:?}")),
             AppError::BadRequest(message) => (StatusCode::BAD_REQUEST, message),
+            AppError::NotFound(message) => (StatusCode::NOT_FOUND, message),
             AppError::Upstream(message) => (StatusCode::BAD_GATEWAY, message),
         };
+        let mut context = Context::new();
 
-        (
-            status,
-            Json(json!({
-                "data": null,
-                "error": message,
-            })),
-        )
-            .into_response()
+        context.insert("status", &status.as_u16());
+        context.insert("message", &message);
+
+        let body = crate::templates::render("error.tera", &context)
+            .unwrap_or_else(|_| format!("<h1>{}</h1><p>{}</p>", status.as_u16(), message));
+
+        (status, Html(body)).into_response()
     }
 }

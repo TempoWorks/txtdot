@@ -1,5 +1,7 @@
 node_modules/
 target/
+.env
+!.env.example
 *.tsbuildinfo
 dist/
 *.min.css

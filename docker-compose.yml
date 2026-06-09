@@ -1,0 +1,17 @@
+services:
+  txtdot:
+    build:
+      context: ..
+      dockerfile: txtdot/Dockerfile
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8080
+      TIMEOUT: ${TIMEOUT:-0}
+      REVERSE_PROXY: ${REVERSE_PROXY:-false}
+      PROXY_RES: ${PROXY_RES:-true}
+      IMG_COMPRESS: ${IMG_COMPRESS:-true}
+      SWAGGER: ${SWAGGER:-false}
+      SEARCH_BY_DEFAULT: ${SEARCH_BY_DEFAULT:-false}
+      SEARX_URL: ${SEARX_URL:-}
+    ports:
+      - "${PORT:-8080}:8080"

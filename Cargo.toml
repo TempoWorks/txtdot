@@ -9,6 +9,7 @@ base64 = "0.22.1"
 dalet = { version = "1.0.0-pre.34", features = ["types"], default-features = false }
 drova_plugins = { path = "../drova/drova_plugins" }
 drova_sdk = { path = "../drova/drova_sdk" }
+dotenvy = "0.15.7"
 image = { version = "0.25.10", default-features = false, features = ["jpeg", "png", "gif", "webp"] }
 lol_html = "3.0.0"
 reqwest = { version = "0.13.4", default-features = false, features = ["rustls"] }

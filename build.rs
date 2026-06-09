@@ -17,7 +17,10 @@ fn main() {
     }
 
     copy_static(static_src, &static_out).expect("copy static files");
-    println!("cargo:rustc-env=TXTDOT_STATIC_DIR={}", static_out.display());
+    println!(
+        "cargo:rustc-env=TXTDOT_BUILD_STATIC_DIR={}",
+        static_out.display()
+    );
 }
 
 fn copy_static(src: &Path, dest: &Path) -> io::Result<()> {
