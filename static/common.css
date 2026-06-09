@@ -18,7 +18,8 @@
   --ring: #0f766e;
   --destructive: #b91c1c;
   --radius: 0.5rem;
-  --shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 10px 30px rgba(15, 23, 42, 0.08);
+  --shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06), 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -49,7 +50,11 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(circle at top left, rgba(15, 118, 110, 0.09), transparent 28rem),
+    radial-gradient(
+      circle at top left,
+      rgba(15, 118, 110, 0.09),
+      transparent 28rem
+    ),
     var(--background);
   color: var(--foreground);
   font-family:
@@ -82,14 +87,14 @@ p {
 }
 
 h1 {
-  font-size: clamp(3rem, 12vw, 7rem);
+  font-size: clamp(1rem, 12vw, 4rem);
   line-height: 0.9;
   letter-spacing: 0;
   font-weight: 800;
 }
 
 h2 {
-  font-size: 1rem;
+  font-size: 0.75rem;
   line-height: 1.2;
   font-weight: 700;
 }

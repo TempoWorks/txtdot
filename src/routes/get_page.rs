@@ -31,7 +31,7 @@ pub async fn get_page(
     }
 
     let content = proxy::rewrite_html_links(
-        &drova::render_html(page)?,
+        &drova::render_html(page.clone())?,
         &request_base(&headers, uri.scheme_str()),
         &params.url,
         state.config.proxy.img_compress,
@@ -41,7 +41,7 @@ pub async fn get_page(
         "parsed",
         &json!({
             "lang": "en",
-            "title": "txt. parsed page",
+            "title": page.title,
             "content": content,
         }),
     );
