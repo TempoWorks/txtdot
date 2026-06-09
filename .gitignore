@@ -1,0 +1,8 @@
+node_modules/
+target/
+
+/packages/
+!/packages/server/
+!/packages/server/dist/
+!/packages/server/dist/**
+

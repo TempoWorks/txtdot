@@ -1,0 +1,16 @@
+[package]
+name = "txtdot-v2"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.8.4"
+base64 = "0.22.1"
+dalet = { version = "1.0.0-pre.34", features = ["types"], default-features = false }
+drova_plugins = { path = "../drova/drova_plugins" }
+drova_sdk = { path = "../drova/drova_sdk" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal"] }
+tower-http = { version = "0.6.6", features = ["fs"] }
+
