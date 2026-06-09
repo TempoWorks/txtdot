@@ -1,0 +1,6 @@
+<div class="input">
+  <input type="text" name="q" placeholder="Search" {% if focus %}autofocus{% endif %}>
+</div>
+<div class="input">
+  <input type="submit" class="button" value="Search">
+</div>

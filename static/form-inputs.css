@@ -1,0 +1,20 @@
+input[type='text'],
+select {
+  outline: 0;
+  border: 0;
+  border-bottom: 1px var(--outline) solid;
+  padding: 0.25rem 0.25rem;
+
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 1rem;
+
+  width: 100%;
+
+  transition: border-bottom 0.25s ease-out;
+}
+
+input[type='text']:focus,
+select:focus {
+  border-bottom-color: var(--accent);
+}

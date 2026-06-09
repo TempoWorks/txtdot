@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{ parsed.lang }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{{ parsed.title }}</title>
+    <link rel="stylesheet" href="/static/common.css" />
+    <link rel="stylesheet" href="/static/get.css" />
+    {% include "components/search-styles.tera" %}
+  </head>
+  <body>
+    <main>
+      {% include "components/menu.tera" %}
+      <p class="title">{{ parsed.title }}</p>
+      {{ parsed.content | safe }}
+    </main>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 [package]
-name = "txtdot-v2"
-version = "0.1.0"
+name = "txtdot"
+version = "2.0.0"
 edition = "2021"
 
 [dependencies]
@@ -9,8 +9,20 @@ base64 = "0.22.1"
 dalet = { version = "1.0.0-pre.34", features = ["types"], default-features = false }
 drova_plugins = { path = "../drova/drova_plugins" }
 drova_sdk = { path = "../drova/drova_sdk" }
+image = { version = "0.25.10", default-features = false, features = ["jpeg", "png", "gif", "webp"] }
+lol_html = "3.0.0"
+reqwest = { version = "0.13.4", default-features = false, features = ["rustls"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+tera = "1.20.0"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal"] }
 tower-http = { version = "0.6.6", features = ["fs"] }
+url = "2.5.8"
+webp = "0.3.1"
 
+[build-dependencies]
+css-minify = "0.5.2"
+
+[patch.crates-io]
+drova_plugins = { path = "../drova/drova_plugins" }
+drova_sdk = { path = "../drova/drova_sdk" }

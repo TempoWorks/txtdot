@@ -1,0 +1,9 @@
+<div class="menu">
+  <a class="button secondary" href="/">Home</a>
+  <a class="button secondary" href="{{ remote_url }}">Original page</a>
+  {% if search %}
+    <form class="form-search" action="/search" method="get">
+      {% include "components/search-form.tera" %}
+    </form>
+  {% endif %}
+</div>
