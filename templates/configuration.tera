@@ -18,9 +18,30 @@
         </div>
         <p>{{ description }}</p>
       </header>
+      <div>
+        {{ badge | safe }}
+      </div>
       <div class="configuration">
         <h2>Configuration</h2>
         <pre>  version: {{ version }}{{ env_pretty }}</pre>
+        <h2>Supported protocols</h2>
+        <ol>
+          {% for protocol in protocols %}
+            <li>{{ protocol }}</li>
+          {% endfor %}
+        </ol>
+        <h2>Supported inputs</h2>
+        <ol>
+          {% for input in inputs %}
+            <li>{{ input }}</li>
+          {% endfor %}
+        </ol>
+        <h2>Supported outputs</h2>
+        <ol>
+          {% for output in outputs %}
+            <li>{{ output }}</li>
+          {% endfor %}
+        </ol>
         <h2>Available engines</h2>
         <ol>
           {% for engine in engines %}
