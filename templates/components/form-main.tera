@@ -9,9 +9,16 @@
 
   <form action="/search" method="get" class="input-grid main-form-search">
     {% include "components/search-form.tera" %}
-    <div class="input-row">
-      {% include "components/proxy-options.tera" %}
-    </div>
+    <details class="options-menu">
+      <summary class="button secondary">Options</summary>
+      <div class="options-panel">
+        <label class="image-option">
+          <input type="checkbox" name="highlight_code" value="true" checked>
+          <span>Highlight code</span>
+        </label>
+        {% include "components/proxy-options.tera" %}
+      </div>
+    </details>
   </form>
 {% endif %}
 
@@ -30,6 +37,15 @@
         <option value="daletpack">Daletpack</option>
       </select>
     </div>
-    {% include "components/proxy-options.tera" %}
+    <details class="options-menu">
+      <summary class="button secondary">Options</summary>
+      <div class="options-panel">
+        <label class="image-option">
+          <input type="checkbox" name="highlight_code" value="true" checked>
+          <span>Highlight code</span>
+        </label>
+        {% include "components/proxy-options.tera" %}
+      </div>
+    </details>
   </div>
 </form>

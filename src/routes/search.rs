@@ -11,6 +11,7 @@ use super::url_encode;
 #[derive(Deserialize)]
 pub struct SearchParams {
     q: String,
+    highlight_code: Option<bool>,
     optimize_images: Option<bool>,
     skip_image_optimization: Option<bool>,
     direct_documents: Option<bool>,
@@ -32,6 +33,7 @@ pub async fn search(
     let target = format!("{}/search?q={}", searx_url, url_encode(&params.q));
 
     let mut redirect = format!("/get?url={}", url_encode(&target));
+    append_bool_param(&mut redirect, "highlight_code", params.highlight_code);
     append_bool_param(&mut redirect, "optimize_images", params.optimize_images);
     append_bool_param(
         &mut redirect,

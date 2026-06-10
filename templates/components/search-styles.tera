@@ -1,3 +1,4 @@
 {% if search %}
+  <link rel="stylesheet" href="/static/form.css" />
   <link rel="stylesheet" href="/static/search.css" />
 {% endif %}

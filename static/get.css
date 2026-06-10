@@ -6,16 +6,15 @@ main {
   position: sticky;
   top: 0;
   z-index: 10;
-  margin: 0 -0.5rem 1.25rem;
-  padding: 0.75rem 0.5rem;
-  background: color-mix(in srgb, var(--background) 88%, transparent);
-  backdrop-filter: blur(12px);
+  margin: 0 -0.5rem var(--space-5);
+  padding: var(--space-3) var(--space-2);
+  background: var(--color-bg);
 }
 
 .title {
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.75rem;
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-3);
   font-size: 1.4rem;
   font-weight: 750;
   line-height: 1.2;
@@ -23,18 +22,14 @@ main {
 
 p,
 li {
-  color: color-mix(in srgb, var(--foreground) 86%, var(--muted-foreground));
-}
-
-a {
-  color: var(--accent);
+  color: var(--color-fg);
 }
 
 blockquote {
   margin-left: 0;
-  border-left: 3px solid var(--border);
-  padding-left: 1rem;
-  color: var(--muted-foreground);
+  border-left: 3px solid var(--color-border);
+  padding-left: var(--space-4);
+  color: var(--color-muted-fg);
 }
 
 pre,
@@ -56,5 +51,5 @@ img,
 picture,
 video {
   height: auto;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
 }

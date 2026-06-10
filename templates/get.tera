@@ -8,6 +8,11 @@
     <title>{{ parsed.title }}</title>
     <link rel="stylesheet" href="/static/common.css" />
     <link rel="stylesheet" href="/static/get.css" />
+    {% if highlight_code %}
+      <link rel="stylesheet" href="/static/third-party/styles/atom-one-light.min.css" />
+      <link rel="stylesheet" href="/static/third-party/styles/atom-one-dark.min.css" media="screen and (prefers-color-scheme: dark)" />
+      <script src="/static/third-party/scripts/highlight.min.js"></script>
+    {% endif %}
     {% include "components/search-styles.tera" %}
   </head>
   <body>
@@ -15,6 +20,9 @@
       {% include "components/menu.tera" %}
       <p class="title">{{ parsed.title }}</p>
       {{ parsed.content | safe }}
+      {% if highlight_code %}
+        <script>hljs.highlightAll();</script>
+      {% endif %}
     </main>
   </body>
 </html>

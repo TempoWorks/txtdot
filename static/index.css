@@ -12,7 +12,7 @@ header {
 
 header p {
   max-width: 34rem;
-  color: var(--muted-foreground);
+  color: var(--color-muted-fg);
 }
 
 .menu {

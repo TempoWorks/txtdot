@@ -1,6 +1,6 @@
 main {
   display: grid;
-  gap: 1.25rem;
+  gap: var(--space-5);
 }
 
 header {
@@ -9,44 +9,44 @@ header {
 
 header p {
   max-width: 42rem;
-  color: var(--muted-foreground);
+  color: var(--color-muted-fg);
 }
 
 svg {
+  display: block;
   width: min(100%, 34rem);
   height: auto;
-  display: block;
 }
 
 .configuration {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
 .config-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .config-grid > div {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-  background: var(--surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  background: var(--color-surface);
 }
 
 ol {
   display: grid;
-  gap: 0.25rem;
-  margin: 0.75rem 0 0;
-  padding-left: 1.25rem;
-  color: var(--muted-foreground);
+  gap: var(--space-1);
+  margin: var(--space-3) 0 0;
+  padding-left: var(--space-5);
+  color: var(--color-muted-fg);
 }
 
 li::marker {
-  color: var(--accent);
-  font-weight: 700;
+  color: var(--color-primary);
+  font-weight: 750;
 }
 
 @media (max-width: 48rem) {

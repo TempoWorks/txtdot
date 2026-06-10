@@ -6,3 +6,5 @@ target/
 dist/
 *.min.css
 *.min.js
+!static/third-party/**/*.min.css
+!static/third-party/**/*.min.js

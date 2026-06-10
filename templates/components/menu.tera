@@ -4,7 +4,7 @@
   {% if search %}
     <form class="form-search" action="/search" method="get">
       {% include "components/search-form.tera" %}
-      {% include "components/proxy-options.tera" %}
+      <input type="hidden" name="highlight_code" value="true">
     </form>
   {% endif %}
 </div>

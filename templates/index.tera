@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/static/common.css">
     <link rel="stylesheet" href="/static/index.css">
     <link rel="stylesheet" href="/static/form.css">
-    <link rel="stylesheet" href="/static/form-inputs.css">
   </head>
   <body>
     <main>

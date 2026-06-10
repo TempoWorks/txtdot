@@ -15,6 +15,7 @@ use super::request_base;
 pub struct GetParams {
     url: String,
     format: Option<String>,
+    highlight_code: Option<bool>,
     optimize_images: Option<bool>,
     skip_image_optimization: Option<bool>,
     direct_documents: Option<bool>,
@@ -69,6 +70,7 @@ pub async fn get_page(
         }),
     );
     context.insert("remote_url", &params.url);
+    context.insert("highlight_code", &params.highlight_code.unwrap_or(false));
     context.insert("search", &state.config.third_party.searx_url.is_some());
     context.insert(
         "image_processing_available",
