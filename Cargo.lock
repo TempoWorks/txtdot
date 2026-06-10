@@ -610,9 +610,9 @@ checksum = "1aaf95b3e5c8f23aa320147307562d361db0ae0d51242340f558153b4eb2439b"
 
 [[package]]
 name = "drova_plugins"
-version = "3.3.0"
+version = "3.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50e3fe98eda6ab27dcd1f0932ace11466741f95c9445f1012d7f0c06a8802341"
+checksum = "3595cfbb6fc9e33a83a7a3b3146c6fc078f23cdf5c6e7349e5fcce6c11b5352a"
 dependencies = [
  "async-trait",
  "bytes",

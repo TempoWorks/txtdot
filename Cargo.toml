@@ -7,7 +7,7 @@ edition = "2021"
 axum = "0.8.4"
 base64 = "0.22.1"
 dalet = { version = "1.0.0-pre.34", features = ["types"], default-features = false }
-drova_plugins = "3.3.0"
+drova_plugins = "3.3.1"
 drova_sdk = "3.3.0"
 dotenvy = "0.15.7"
 image = { version = "0.25.10", default-features = false, features = ["avif", "jpeg", "png", "gif", "webp"] }
