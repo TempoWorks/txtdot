@@ -11,6 +11,7 @@ pub struct Config {
     pub proxy: ProxyConfig,
     pub swagger: bool,
     pub search_by_default: bool,
+    pub img_optimize_by_default: bool,
     pub third_party: ThirdPartyConfig,
 }
 
@@ -18,8 +19,11 @@ pub const DESCRIPTION: &str = "HTTP proxy that parses only text, links and pictu
 
 #[derive(Clone, Serialize)]
 pub struct ProxyConfig {
-    pub enabled: bool,
-    pub img_compress: bool,
+    pub process_images: bool,
+    pub documents: bool,
+    pub images: bool,
+    pub media: bool,
+    pub files: bool,
 }
 
 #[derive(Clone, Serialize)]
@@ -41,11 +45,15 @@ impl Config {
                 .unwrap_or(0),
             reverse_proxy: env_bool("REVERSE_PROXY", false),
             proxy: ProxyConfig {
-                enabled: env_bool("PROXY_RES", true),
-                img_compress: env_bool("IMG_COMPRESS", true),
+                process_images: env_bool("IMG_PROCESS", true),
+                documents: env_bool("PROXY_DOCUMENTS", true),
+                images: env_bool("PROXY_IMAGES", true),
+                media: env_bool("PROXY_MEDIA", true),
+                files: env_bool("PROXY_FILES", true),
             },
             swagger: env_bool("SWAGGER", false),
             search_by_default: env_bool("SEARCH_BY_DEFAULT", false),
+            img_optimize_by_default: env_bool("IMG_OPTIMIZE_BY_DEFAULT", true),
             third_party: ThirdPartyConfig {
                 searx_url: env::var("SEARX_URL")
                     .ok()

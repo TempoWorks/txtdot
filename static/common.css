@@ -158,6 +158,31 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
+.option-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.85rem;
+  align-items: center;
+}
+
+.image-option {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--muted-foreground);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.image-option input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent);
+}
+
 .button.secondary {
   border-color: var(--border);
   background: var(--surface);

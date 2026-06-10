@@ -8,8 +8,12 @@ services:
       PORT: 8080
       TIMEOUT: ${TIMEOUT:-0}
       REVERSE_PROXY: ${REVERSE_PROXY:-false}
-      PROXY_RES: ${PROXY_RES:-true}
-      IMG_COMPRESS: ${IMG_COMPRESS:-true}
+      PROXY_DOCUMENTS: ${PROXY_DOCUMENTS:-true}
+      PROXY_IMAGES: ${PROXY_IMAGES:-true}
+      PROXY_MEDIA: ${PROXY_MEDIA:-true}
+      PROXY_FILES: ${PROXY_FILES:-true}
+      IMG_PROCESS: ${IMG_PROCESS:-true}
+      IMG_OPTIMIZE_BY_DEFAULT: ${IMG_OPTIMIZE_BY_DEFAULT:-true}
       SWAGGER: ${SWAGGER:-false}
       SEARCH_BY_DEFAULT: ${SEARCH_BY_DEFAULT:-false}
       SEARX_URL: ${SEARX_URL:-}

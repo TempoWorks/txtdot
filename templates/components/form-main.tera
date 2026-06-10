@@ -9,6 +9,9 @@
 
   <form action="/search" method="get" class="input-grid main-form-search">
     {% include "components/search-form.tera" %}
+    <div class="input-row">
+      {% include "components/proxy-options.tera" %}
+    </div>
   </form>
 {% endif %}
 
@@ -27,5 +30,6 @@
         <option value="daletpack">Daletpack</option>
       </select>
     </div>
+    {% include "components/proxy-options.tera" %}
   </div>
 </form>

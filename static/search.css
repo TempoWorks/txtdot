@@ -9,9 +9,17 @@
   flex: 1;
 }
 
+.form-search .image-option {
+  flex: 0 0 auto;
+}
+
 @media (max-width: 42rem) {
   .form-search {
     flex-basis: 100%;
     margin-left: 0;
+  }
+
+  .form-search .image-option {
+    flex-basis: 100%;
   }
 }

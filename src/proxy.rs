@@ -3,15 +3,30 @@ use axum::{
     http::{header, HeaderMap, HeaderValue},
     response::{IntoResponse, Response},
 };
-use image::DynamicImage;
+use image::{DynamicImage, ImageEncoder};
 use serde::Deserialize;
 use url::Url;
 
 use crate::error::AppError;
 
+#[derive(Clone, Copy)]
+pub struct RewriteOptions {
+    pub proxy_documents: bool,
+    pub proxy_images: bool,
+    pub proxy_media: bool,
+    pub proxy_files: bool,
+    pub process_images: bool,
+}
+
 #[derive(Deserialize)]
 pub struct ProxyParams {
     pub url: String,
+}
+
+#[derive(Deserialize)]
+pub struct ProxyImgParams {
+    pub url: String,
+    pub w: Option<u32>,
 }
 
 pub async fn proxy(Query(params): Query<ProxyParams>) -> Result<Response, AppError> {
@@ -37,7 +52,7 @@ pub async fn proxy(Query(params): Query<ProxyParams>) -> Result<Response, AppErr
     Ok((out, bytes).into_response())
 }
 
-pub async fn proxy_img(Query(params): Query<ProxyParams>) -> Result<Response, AppError> {
+pub async fn proxy_img(Query(params): Query<ProxyImgParams>) -> Result<Response, AppError> {
     let response = reqwest::get(&params.url)
         .await
         .map_err(|error| AppError::Upstream(error.to_string()))?;
@@ -66,12 +81,21 @@ pub async fn proxy_img(Query(params): Query<ProxyParams>) -> Result<Response, Ap
         return Ok((headers, bytes).into_response());
     }
 
-    let image =
+    let mut image =
         image::load_from_memory(&bytes).map_err(|error| AppError::Upstream(error.to_string()))?;
-    let compressed = encode_webp(&image)?;
+    if let Some(width) = params
+        .w
+        .filter(|width| *width > 0 && *width < image.width())
+    {
+        let height = ((image.height() as u64 * width as u64) / image.width() as u64)
+            .max(1)
+            .min(u32::MAX as u64) as u32;
+        image = image.resize_exact(width, height, image::imageops::FilterType::Lanczos3);
+    }
+    let compressed = encode_avif(&image)?;
 
     let mut headers = HeaderMap::new();
-    headers.insert(header::CONTENT_TYPE, HeaderValue::from_static("image/webp"));
+    headers.insert(header::CONTENT_TYPE, HeaderValue::from_static("image/avif"));
     headers.insert(
         header::CONTENT_LENGTH,
         HeaderValue::from_str(&compressed.len().to_string())
@@ -95,7 +119,7 @@ pub fn rewrite_html_links(
     html: &str,
     request_base: &str,
     remote_url: &str,
-    img_compress: bool,
+    options: RewriteOptions,
 ) -> Result<String, AppError> {
     use lol_html::{element, rewrite_str, RewriteStrSettings};
 
@@ -103,41 +127,89 @@ pub fn rewrite_html_links(
     let request =
         Url::parse(request_base).map_err(|error| AppError::BadRequest(error.to_string()))?;
 
-    let parser_url = |href: &str| parser_url(&request, &remote, href);
-    let proxied_url = |href: &str| proxy_url(&request, &remote, href, false);
-    let img_proxy_url = |href: &str| proxy_url(&request, &remote, href, img_compress);
+    let document_url = |href: &str| {
+        if options.proxy_documents {
+            parser_url(&request, &remote, href)
+        } else {
+            direct_url(&remote, href)
+        }
+    };
+    let frame_url = |href: &str| {
+        if options.proxy_documents {
+            parser_url(&request, &remote, href)
+        } else {
+            direct_url(&remote, href)
+        }
+    };
+    let media_url = |href: &str| {
+        if options.proxy_media {
+            proxy_url(&request, &remote, href, false)
+        } else {
+            direct_url(&remote, href)
+        }
+    };
+    let file_url = |href: &str| {
+        if options.proxy_files {
+            proxy_url(&request, &remote, href, false)
+        } else {
+            direct_url(&remote, href)
+        }
+    };
+    let img_url = |href: &str| {
+        if options.proxy_images || options.process_images {
+            proxy_url(&request, &remote, href, options.process_images)
+        } else {
+            direct_url(&remote, href)
+        }
+    };
+    let img_srcset = |href: &str| responsive_srcset(&request, &remote, href);
 
     rewrite_str(
         html,
         RewriteStrSettings::new()
             .append_element_content_handler(element!("a[href]", move |el| {
-                rewrite_attr(el, "href", &parser_url);
+                rewrite_attr(el, "href", &document_url);
                 Ok(())
             }))
             .append_element_content_handler(element!("frame[src], iframe[src]", move |el| {
-                rewrite_attr(el, "src", &parser_url);
+                rewrite_attr(el, "src", &frame_url);
                 Ok(())
             }))
             .append_element_content_handler(element!(
-                "video[src], audio[src], embed[src], track[src], source[src]",
+                "video[src], audio[src], source[src]",
                 move |el| {
-                    rewrite_attr(el, "src", &proxied_url);
+                    rewrite_attr(el, "src", &media_url);
                     Ok(())
                 }
             ))
+            .append_element_content_handler(element!("embed[src], track[src]", move |el| {
+                rewrite_attr(el, "src", &file_url);
+                Ok(())
+            }))
             .append_element_content_handler(element!("object[data]", move |el| {
-                rewrite_attr(el, "data", &proxied_url);
+                rewrite_attr(el, "data", &file_url);
                 Ok(())
             }))
             .append_element_content_handler(element!("img[src], image[src]", move |el| {
-                rewrite_attr(el, "src", &img_proxy_url);
+                if options.process_images && el.get_attribute("srcset").is_none() {
+                    if let Some(src) = el.get_attribute("src") {
+                        if let Some(srcset) = img_srcset(&src) {
+                            let _ = el.set_attribute("srcset", &srcset);
+                            if el.get_attribute("sizes").is_none() {
+                                let _ =
+                                    el.set_attribute("sizes", "(max-width: 768px) 100vw, 768px");
+                            }
+                        }
+                    }
+                }
+                rewrite_attr(el, "src", &img_url);
                 Ok(())
             }))
             .append_element_content_handler(element!("source[srcset], img[srcset]", move |el| {
                 if let Some(srcset) = el.get_attribute("srcset") {
                     let rewritten = srcset
                         .split(',')
-                        .map(|candidate| rewrite_srcset_candidate(candidate, &proxied_url))
+                        .map(|candidate| rewrite_srcset_candidate(candidate, &img_url))
                         .collect::<Vec<_>>()
                         .join(", ");
                     let _ = el.set_attribute("srcset", &rewritten);
@@ -177,6 +249,10 @@ fn parser_url(request: &Url, remote: &Url, href: &str) -> Option<String> {
     Some(url.to_string())
 }
 
+fn direct_url(remote: &Url, href: &str) -> Option<String> {
+    remote.join(href).ok().map(|url| url.to_string())
+}
+
 fn proxy_url(request: &Url, remote: &Url, href: &str, img: bool) -> Option<String> {
     let resolved = remote.join(href).ok()?;
     let mut url = request
@@ -186,9 +262,33 @@ fn proxy_url(request: &Url, remote: &Url, href: &str, img: bool) -> Option<Strin
     Some(url.to_string())
 }
 
-fn encode_webp(image: &DynamicImage) -> Result<Vec<u8>, AppError> {
-    let rgba = DynamicImage::ImageRgba8(image.to_rgba8());
-    let encoder =
-        webp::Encoder::from_image(&rgba).map_err(|error| AppError::Upstream(error.to_string()))?;
-    Ok(encoder.encode(25.0).to_vec())
+fn responsive_srcset(request: &Url, remote: &Url, href: &str) -> Option<String> {
+    const WIDTHS: [u32; 4] = [320, 640, 960, 1280];
+
+    WIDTHS
+        .iter()
+        .map(|width| {
+            let resolved = remote.join(href).ok()?;
+            let mut url = request.join("/proxy/img").ok()?;
+            url.query_pairs_mut()
+                .append_pair("url", resolved.as_str())
+                .append_pair("w", &width.to_string());
+            Some(format!("{url} {width}w"))
+        })
+        .collect::<Option<Vec<_>>>()
+        .map(|candidates| candidates.join(", "))
+}
+
+fn encode_avif(image: &DynamicImage) -> Result<Vec<u8>, AppError> {
+    let rgba = image.to_rgba8();
+    let mut compressed = Vec::new();
+    image::codecs::avif::AvifEncoder::new_with_speed_quality(&mut compressed, 7, 55)
+        .write_image(
+            rgba.as_raw(),
+            rgba.width(),
+            rgba.height(),
+            image::ExtendedColorType::Rgba8,
+        )
+        .map_err(|error| AppError::Upstream(error.to_string()))?;
+    Ok(compressed)
 }

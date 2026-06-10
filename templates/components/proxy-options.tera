@@ -1,0 +1,37 @@
+<div class="option-group">
+  {% if image_processing_available %}
+    <label class="image-option">
+      {% if image_optimization_default %}
+        <input type="checkbox" name="skip_image_optimization" value="true" {% if not process_images %}checked{% endif %}>
+        <span>Skip image optimization</span>
+      {% else %}
+        <input type="checkbox" name="optimize_images" value="true" {% if process_images %}checked{% endif %}>
+        <span>Optimize images</span>
+      {% endif %}
+    </label>
+  {% endif %}
+  {% if server_proxy_images %}
+    <label class="image-option">
+      <input type="checkbox" name="direct_images" value="true" {% if not proxy_images %}checked{% endif %}>
+      <span>Use direct images</span>
+    </label>
+  {% endif %}
+  {% if server_proxy_media %}
+    <label class="image-option">
+      <input type="checkbox" name="direct_media" value="true" {% if not proxy_media %}checked{% endif %}>
+      <span>Use direct media</span>
+    </label>
+  {% endif %}
+  {% if server_proxy_files %}
+    <label class="image-option">
+      <input type="checkbox" name="direct_files" value="true" {% if not proxy_files %}checked{% endif %}>
+      <span>Use direct files</span>
+    </label>
+  {% endif %}
+  {% if server_proxy_documents %}
+    <label class="image-option">
+      <input type="checkbox" name="direct_documents" value="true" {% if not proxy_documents %}checked{% endif %}>
+      <span>Use direct links</span>
+    </label>
+  {% endif %}
+</div>
