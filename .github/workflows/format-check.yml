@@ -11,20 +11,9 @@ jobs:
     steps:
       - name: Checkout txtdot
         uses: actions/checkout@v4
-        with:
-          path: txtdot
-
-      - name: Checkout drova
-        uses: actions/checkout@v4
-        with:
-          repository: TempoWorks/drova
-          ref: txtdot-v2-rust
-          path: drova
 
       - name: Set up Rust cache
         uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: txtdot -> target
 
       - name: Check formatting
         working-directory: txtdot

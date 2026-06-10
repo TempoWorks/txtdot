@@ -9,23 +9,11 @@ jobs:
   build-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout txtdot
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          path: txtdot
-
-      - name: Checkout drova
-        uses: actions/checkout@v4
-        with:
-          repository: TempoWorks/drova
-          ref: txtdot-v2-rust
-          path: drova
 
       - name: Set up Rust cache
         uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: txtdot -> target
 
       - name: Check build
-        working-directory: txtdot
         run: cargo check --locked
