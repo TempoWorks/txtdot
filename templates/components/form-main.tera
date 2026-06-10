@@ -33,8 +33,9 @@
     <div class="input">
       <label for="format">Format</label>
       <select name="format">
-        <option value="html" selected>HTML</option>
-        <option value="daletpack">Daletpack</option>
+        {% for format in output_formats %}
+          <option value="{{ format.value }}" {% if format.selected %}selected{% endif %}>{{ format.label }}</option>
+        {% endfor %}
       </select>
     </div>
     <details class="options-menu">

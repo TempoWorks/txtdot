@@ -61,44 +61,39 @@ pub async fn api_get(
     let output_type = request
         .output_type
         .as_deref()
-        .unwrap_or("application/daletpack");
-    match output_type {
-        "html" | "text/html" => {
-            let mut html = drova::render_html(page)?;
-            if request.rewrite_links.unwrap_or(source_url.is_some()) {
-                let remote_url = source_url.ok_or_else(|| {
-                    AppError::BadRequest("url is required when rewrite_links is true".to_string())
-                })?;
-                let request_base = request
-                    .request_base
-                    .unwrap_or_else(|| request_base(&headers, uri.scheme_str()));
-                let process_images = state.config.proxy.process_images
-                    && request
-                        .process_images
-                        .unwrap_or(state.config.img_optimize_by_default);
-                let rewrite_options = proxy::RewriteOptions {
-                    proxy_documents: request
-                        .proxy_documents
-                        .unwrap_or(state.config.proxy.documents)
-                        && state.config.proxy.documents,
-                    proxy_images: request.proxy_images.unwrap_or(state.config.proxy.images)
-                        && state.config.proxy.images,
-                    proxy_media: request.proxy_media.unwrap_or(state.config.proxy.media)
-                        && state.config.proxy.media,
-                    proxy_files: request.proxy_files.unwrap_or(state.config.proxy.files)
-                        && state.config.proxy.files,
-                    process_images,
-                };
-                html =
-                    proxy::rewrite_html_links(&html, &request_base, &remote_url, rewrite_options)?;
-            }
-            Ok(Html(html).into_response())
+        .unwrap_or(drova::DEFAULT_API_OUTPUT);
+    let output_type = drova::resolve_output_type(output_type)?;
+
+    if drova::is_html_output(&output_type) {
+        let mut html = drova::render_html(page)?;
+        if request.rewrite_links.unwrap_or(source_url.is_some()) {
+            let remote_url = source_url.ok_or_else(|| {
+                AppError::BadRequest("url is required when rewrite_links is true".to_string())
+            })?;
+            let request_base = request
+                .request_base
+                .unwrap_or_else(|| request_base(&headers, uri.scheme_str()));
+            let process_images = state.config.proxy.process_images
+                && request
+                    .process_images
+                    .unwrap_or(state.config.img_optimize_by_default);
+            let rewrite_options = proxy::RewriteOptions {
+                proxy_documents: request
+                    .proxy_documents
+                    .unwrap_or(state.config.proxy.documents)
+                    && state.config.proxy.documents,
+                proxy_images: request.proxy_images.unwrap_or(state.config.proxy.images)
+                    && state.config.proxy.images,
+                proxy_media: request.proxy_media.unwrap_or(state.config.proxy.media)
+                    && state.config.proxy.media,
+                proxy_files: request.proxy_files.unwrap_or(state.config.proxy.files)
+                    && state.config.proxy.files,
+                process_images,
+            };
+            html = proxy::rewrite_html_links(&html, &request_base, &remote_url, rewrite_options)?;
         }
-        "dalet" | "daletpack" | "application/daletpack" => {
-            drova::daletpack_response(drova::render_daletpack(page))
-        }
-        other => Err(AppError::BadRequest(format!(
-            "unsupported output format: {other}"
-        ))),
+        return Ok(Html(html).into_response());
     }
+
+    drova::output_response(&output_type, page)
 }

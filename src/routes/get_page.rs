@@ -31,10 +31,15 @@ pub async fn get_page(
     Query(params): Query<GetParams>,
 ) -> Result<Response, AppError> {
     let page = drova::requester().process(&params.url).await?;
-    let format = params.format.as_deref().unwrap_or("html");
+    let output_type = drova::resolve_output_type(
+        params
+            .format
+            .as_deref()
+            .unwrap_or(drova::DEFAULT_PAGE_OUTPUT),
+    )?;
 
-    if matches!(format, "dalet" | "daletpack" | "application/daletpack") {
-        return drova::daletpack_response(drova::render_daletpack(page));
+    if !drova::is_html_output(&output_type) {
+        return drova::output_response(&output_type, page);
     }
 
     let proxy_documents = state.config.proxy.documents && !params.direct_documents.unwrap_or(false);

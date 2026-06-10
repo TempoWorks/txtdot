@@ -1,7 +1,7 @@
 use axum::{extract::State, response::Html};
 use tera::Context;
 
-use crate::{config::DESCRIPTION, error::AppError, state::AppState, templates};
+use crate::{config::DESCRIPTION, drova, error::AppError, state::AppState, templates};
 
 pub async fn index(State(state): State<AppState>) -> Result<Html<String>, AppError> {
     let mut context = Context::new();
@@ -9,6 +9,10 @@ pub async fn index(State(state): State<AppState>) -> Result<Html<String>, AppErr
     context.insert("version", env!("CARGO_PKG_VERSION"));
     context.insert("search", &state.config.third_party.searx_url.is_some());
     context.insert("search_by_default", &state.config.search_by_default);
+    context.insert(
+        "output_formats",
+        &drova::output_options(drova::DEFAULT_PAGE_OUTPUT),
+    );
     context.insert(
         "image_processing_available",
         &state.config.proxy.process_images,

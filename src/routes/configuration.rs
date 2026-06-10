@@ -7,9 +7,9 @@ use axum::{
 use serde_json::{json, Value};
 use tera::Context;
 
-use crate::{config::DESCRIPTION, error::AppError, state::AppState, templates};
+use crate::{config::DESCRIPTION, drova, error::AppError, state::AppState, templates};
 
-use super::{inputs, outputs, protocols, public_config, request_base};
+use super::{public_config, request_base};
 
 pub async fn configuration(State(state): State<AppState>) -> Result<Html<String>, AppError> {
     let env_pretty = serde_json::to_string_pretty(&public_config(state.config.as_ref()))
@@ -22,9 +22,9 @@ pub async fn configuration(State(state): State<AppState>) -> Result<Html<String>
     context.insert("version", env!("CARGO_PKG_VERSION"));
     context.insert("env_pretty", &env_pretty);
     context.insert("badge", &badge);
-    context.insert("protocols", &protocols());
-    context.insert("inputs", &inputs());
-    context.insert("outputs", &outputs());
+    context.insert("protocols", &drova::supported_protocols());
+    context.insert("inputs", &drova::supported_inputs());
+    context.insert("outputs", &drova::supported_outputs());
     context.insert("routes", state.routes.as_ref());
 
     Ok(Html(templates::render("configuration.tera", &context)?))
@@ -50,9 +50,9 @@ pub async fn configuration_json(State(state): State<AppState>) -> Json<Value> {
     Json(json!({
         "version": env!("CARGO_PKG_VERSION"),
         "config": public_config(state.config.as_ref()),
-        "protocols": protocols(),
-        "inputs": inputs(),
-        "outputs": outputs(),
+        "protocols": drova::supported_protocols(),
+        "inputs": drova::supported_inputs(),
+        "outputs": drova::supported_outputs(),
         "routes": state.routes.as_ref(),
     }))
 }
@@ -69,8 +69,8 @@ fn render_big_badge(state: &AppState, base_url: &str) -> Result<String, AppError
             "disabled"
         },
     );
-    context.insert("inputs_count", &inputs().len());
-    context.insert("outputs_count", &outputs().len());
+    context.insert("inputs_count", &drova::supported_inputs().len());
+    context.insert("outputs_count", &drova::supported_outputs().len());
 
     templates::render("big-badge.tera", &context)
 }

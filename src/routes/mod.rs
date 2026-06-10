@@ -46,27 +46,6 @@ pub fn app_routes() -> Vec<&'static str> {
     ]
 }
 
-pub fn protocols() -> Vec<&'static str> {
-    vec!["http", "https", "gemini", "gopher"]
-}
-
-pub fn inputs() -> Vec<&'static str> {
-    vec![
-        "application/daletpack",
-        "text/gemini",
-        "text/x-gophermap",
-        "text/markdown",
-        "text/x-markdown",
-        "text/html",
-        "text/plain",
-        "text/*",
-    ]
-}
-
-pub fn outputs() -> Vec<&'static str> {
-    vec!["application/daletpack", "text/html"]
-}
-
 pub fn public_config(config: &Config) -> Value {
     let mut value = serde_json::to_value(config).unwrap_or_else(|_| json!({}));
     if let Some(object) = value.as_object_mut() {
