@@ -100,21 +100,56 @@ header {
 
 h1,
 h2,
+h3,
+h4,
+h5,
+h6,
 p {
   margin: 0;
 }
 
 h1 {
-  font-size: clamp(2.75rem, 12vw, 4rem);
-  line-height: 0.9;
+  margin: var(--space-8) 0 var(--space-4);
+  font-size: 2rem;
+  line-height: 1.1;
   letter-spacing: 0;
   font-weight: 800;
 }
 
 h2 {
-  font-size: 0.8125rem;
-  line-height: 1.2;
+  margin: var(--space-6) 0 var(--space-3);
+  font-size: 1.35rem;
+  line-height: 1.25;
   font-weight: 750;
+}
+
+h3 {
+  margin: var(--space-5) 0 var(--space-2);
+  font-size: 1.15rem;
+  line-height: 1.3;
+  font-weight: 750;
+}
+
+h4,
+h5,
+h6 {
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 750;
+}
+
+header h1,
+header h2,
+header h3,
+.config-grid h2,
+.error-panel h1 {
+  margin: 0;
+}
+
+header h1 {
+  font-size: clamp(2rem, 8vw, 3rem);
+  line-height: 0.95;
 }
 
 a {

@@ -10,6 +10,10 @@ header {
   justify-items: center;
 }
 
+header h1 {
+  font-size: clamp(2.5rem, 10vw, 3.5rem);
+}
+
 header p {
   max-width: 34rem;
   color: var(--color-muted-fg);
