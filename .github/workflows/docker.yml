@@ -25,17 +25,8 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout txtdot
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          path: txtdot
-
-      - name: Checkout drova
-        uses: actions/checkout@v4
-        with:
-          repository: TempoWorks/drova
-          ref: txtdot-v2-rust
-          path: drova
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -47,7 +38,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata for Docker
+      - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -57,7 +48,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: txtdot/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
