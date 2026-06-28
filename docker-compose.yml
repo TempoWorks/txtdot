@@ -1,8 +1,35 @@
 services:
+  txtdot-firewall:
+    build:
+      context: .
+      dockerfile: Dockerfile.egress
+    environment:
+      PORT: 8080
+    ports:
+      - "${PORT:-8080}:8080"
+    networks:
+      - proxy-egress
+    cap_add:
+      - NET_ADMIN
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=1m,noexec,nosuid,nodev
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/firewall-ready"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
+
   txtdot:
     build:
-      context: ..
-      dockerfile: txtdot/Dockerfile
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      txtdot-firewall:
+        condition: service_healthy
+    network_mode: service:txtdot-firewall
     environment:
       HOST: 0.0.0.0
       PORT: 8080
@@ -17,5 +44,17 @@ services:
       SWAGGER: ${SWAGGER:-false}
       SEARCH_BY_DEFAULT: ${SEARCH_BY_DEFAULT:-false}
       SEARX_URL: ${SEARX_URL:-}
-    ports:
-      - "${PORT:-8080}:8080"
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,noexec,nosuid,nodev
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+
+networks:
+  proxy-egress:
+    name: txtdot-proxy-egress
+    driver: bridge
+    attachable: false

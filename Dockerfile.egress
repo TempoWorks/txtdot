@@ -1,0 +1,8 @@
+FROM alpine:3.23
+
+RUN apk add --no-cache iptables
+
+COPY docker/egress-firewall.sh /usr/local/bin/egress-firewall
+RUN chmod 0755 /usr/local/bin/egress-firewall
+
+CMD ["/usr/local/bin/egress-firewall"]

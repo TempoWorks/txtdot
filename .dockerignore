@@ -1,6 +1,11 @@
-.git
-.github
-.env
-target
-dist
-node_modules
+/.git
+/.github
+/target
+/dist
+/node_modules
+/.env
+/.env.*
+!/.env.example
+/docker-compose*.yml
+README.md
+SECURITY.md
