@@ -21,8 +21,12 @@ use state::AppState;
 #[tokio::main]
 async fn main() {
     dotenvy::dotenv().ok();
+    let log_filter = std::env::var("RUST_LOG")
+        .ok()
+        .filter(|value| !value.trim().is_empty())
+        .unwrap_or_else(|| "info".to_string());
     tracing_subscriber::registry()
-        .with(EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info")))
+        .with(EnvFilter::new(log_filter))
         .with(tracing_subscriber::fmt::layer())
         .init();
 
