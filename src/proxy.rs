@@ -30,14 +30,22 @@ pub struct ProxyImgParams {
 }
 
 pub async fn proxy(Query(params): Query<ProxyParams>) -> Result<Response, AppError> {
+    tracing::info!(url = %params.url, "proxy request started");
     let response = reqwest::get(&params.url)
         .await
         .map_err(|error| AppError::Upstream(error.to_string()))?;
+    let status = response.status();
     let headers = response.headers().clone();
     let bytes = response
         .bytes()
         .await
         .map_err(|error| AppError::Upstream(error.to_string()))?;
+    tracing::info!(
+        url = %params.url,
+        status = status.as_u16(),
+        bytes = bytes.len(),
+        "proxy request completed"
+    );
 
     let mut out = HeaderMap::new();
     if let Some(content_type) = headers.get(header::CONTENT_TYPE) {
@@ -53,9 +61,16 @@ pub async fn proxy(Query(params): Query<ProxyParams>) -> Result<Response, AppErr
 }
 
 pub async fn proxy_img(Query(params): Query<ProxyImgParams>) -> Result<Response, AppError> {
+    tracing::info!(
+        url = %params.url,
+        requested_width = params.w,
+        output_format = "avif",
+        "image proxy request started"
+    );
     let response = reqwest::get(&params.url)
         .await
         .map_err(|error| AppError::Upstream(error.to_string()))?;
+    let status = response.status();
     let mime = response
         .headers()
         .get(header::CONTENT_TYPE)
@@ -66,8 +81,20 @@ pub async fn proxy_img(Query(params): Query<ProxyImgParams>) -> Result<Response,
         .bytes()
         .await
         .map_err(|error| AppError::Upstream(error.to_string()))?;
+    tracing::info!(
+        url = %params.url,
+        status = status.as_u16(),
+        content_type = %mime,
+        original_bytes = bytes.len(),
+        "image proxy upstream fetched"
+    );
 
     if mime.starts_with("image/svg") {
+        tracing::info!(
+            url = %params.url,
+            bytes = bytes.len(),
+            "image proxy passed through svg"
+        );
         let mut headers = HeaderMap::new();
         headers.insert(
             header::CONTENT_TYPE,
@@ -83,6 +110,8 @@ pub async fn proxy_img(Query(params): Query<ProxyImgParams>) -> Result<Response,
 
     let mut image =
         image::load_from_memory(&bytes).map_err(|error| AppError::Upstream(error.to_string()))?;
+    let original_width = image.width();
+    let original_height = image.height();
     if let Some(width) = params
         .w
         .filter(|width| *width > 0 && *width < image.width())
@@ -96,6 +125,7 @@ pub async fn proxy_img(Query(params): Query<ProxyImgParams>) -> Result<Response,
 
     let mut headers = HeaderMap::new();
     headers.insert(header::CONTENT_TYPE, HeaderValue::from_static("image/avif"));
+    headers.insert("x-image-format", HeaderValue::from_static("avif"));
     headers.insert(
         header::CONTENT_LENGTH,
         HeaderValue::from_str(&compressed.len().to_string())
@@ -110,6 +140,17 @@ pub async fn proxy_img(Query(params): Query<ProxyImgParams>) -> Result<Response,
         "x-bytes-saved",
         HeaderValue::from_str(&(bytes.len() as isize - compressed.len() as isize).to_string())
             .map_err(|error| AppError::Upstream(error.to_string()))?,
+    );
+    tracing::info!(
+        url = %params.url,
+        original_width,
+        original_height,
+        output_width = image.width(),
+        output_height = image.height(),
+        original_bytes = bytes.len(),
+        avif_bytes = compressed.len(),
+        bytes_saved = bytes.len() as isize - compressed.len() as isize,
+        "image proxy encoded avif"
     );
 
     Ok((headers, compressed).into_response())
