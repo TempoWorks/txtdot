@@ -35,7 +35,7 @@
     "json-schema-to-ts": "^3.1.1",
     "linkedom": "^0.18.9",
     "micromatch": "^4.0.8",
-    "sharp": "^0.34.5"
+    "sharp": "^0.35.0"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
