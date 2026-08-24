@@ -20,8 +20,8 @@
   "dependencies": {
     "@mozilla/readability": "0.6.0",
     "@txtdot/sdk": "workspace:*",
-    "html-to-text": "^10.0.0",
-    "linkedom": "^0.18.9"
+    "html-to-text": "^10.0.1",
+    "linkedom": "^0.18.13"
   },
   "devDependencies": {
     "@types/html-to-text": "^9.0.4"
