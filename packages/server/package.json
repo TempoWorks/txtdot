@@ -28,7 +28,7 @@
     "axios": "^1.16.1",
     "dotenv": "^17.4.2",
     "ejs": "^5.0.2",
-    "fastify": "^5.8.5",
+    "fastify": "^5.12.1",
     "iconv-lite": "^0.7.2",
     "ip-range-check": "^0.2.0",
     "isomorphic-dompurify": "^3.14.0",
