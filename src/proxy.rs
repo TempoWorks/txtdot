@@ -9,6 +9,8 @@ use url::Url;
 
 use crate::error::AppError;
 
+mod srcset;
+
 #[derive(Clone, Copy)]
 pub struct RewriteOptions {
     pub proxy_documents: bool,
@@ -231,6 +233,17 @@ pub fn rewrite_html_links(
                 rewrite_attr(el, "data", &file_url);
                 Ok(())
             }))
+            .append_element_content_handler(element!("source[srcset], img[srcset]", move |el| {
+                if let Some(srcset) = el.get_attribute("srcset") {
+                    let rewritten = srcset
+                        .split(',')
+                        .map(|candidate| srcset::rewrite_candidate(candidate, &img_url))
+                        .collect::<Vec<_>>()
+                        .join(", ");
+                    let _ = el.set_attribute("srcset", &rewritten);
+                }
+                Ok(())
+            }))
             .append_element_content_handler(element!("img[src], image[src]", move |el| {
                 if options.process_images && el.get_attribute("srcset").is_none() {
                     if let Some(src) = el.get_attribute("src") {
@@ -245,17 +258,6 @@ pub fn rewrite_html_links(
                 }
                 rewrite_attr(el, "src", &img_url);
                 Ok(())
-            }))
-            .append_element_content_handler(element!("source[srcset], img[srcset]", move |el| {
-                if let Some(srcset) = el.get_attribute("srcset") {
-                    let rewritten = srcset
-                        .split(',')
-                        .map(|candidate| rewrite_srcset_candidate(candidate, &img_url))
-                        .collect::<Vec<_>>()
-                        .join(", ");
-                    let _ = el.set_attribute("srcset", &rewritten);
-                }
-                Ok(())
             })),
     )
     .map_err(|error| AppError::BadRequest(error.to_string()))
@@ -268,19 +270,6 @@ where
     if let Some(value) = el.get_attribute(attr).and_then(|value| build(&value)) {
         let _ = el.set_attribute(attr, &value);
     }
-}
-
-fn rewrite_srcset_candidate<F>(candidate: &str, build: &F) -> String
-where
-    F: Fn(&str) -> Option<String>,
-{
-    let mut parts = candidate.split_whitespace().collect::<Vec<_>>();
-    if let Some(first) = parts.first_mut() {
-        if let Some(value) = build(first) {
-            *first = Box::leak(value.into_boxed_str());
-        }
-    }
-    parts.join(" ")
 }
 
 fn parser_url(request: &Url, remote: &Url, href: &str) -> Option<String> {
@@ -332,4 +321,36 @@ fn encode_avif(image: &DynamicImage) -> Result<Vec<u8>, AppError> {
         )
         .map_err(|error| AppError::Upstream(error.to_string()))?;
     Ok(compressed)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn generated_srcset_targets_upstream_once_and_keeps_widths() {
+        let html = rewrite_html_links(
+            "<img src=\"/photo.png\">",
+            "http://localhost:8080",
+            "https://example.com/article",
+            RewriteOptions {
+                proxy_documents: true,
+                proxy_images: true,
+                proxy_media: true,
+                proxy_files: true,
+                process_images: true,
+            },
+        )
+        .unwrap_or_else(|_| panic!("rewrite failed"));
+
+        assert!(
+            html.contains("url=https%3A%2F%2Fexample.com%2Fphoto.png&w=320"),
+            "{html}"
+        );
+        assert!(
+            html.contains("url=https%3A%2F%2Fexample.com%2Fphoto.png&w=1280"),
+            "{html}"
+        );
+        assert!(!html.contains("url=http%3A%2F%2Flocalhost"));
+    }
 }
