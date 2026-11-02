@@ -1,6 +1,6 @@
 {
   "name": "@txtdot/sdk",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "SDK for creating plugins for TxtDot",
   "main": "dist/lib.js",
   "types": "dist/lib.d.ts",
