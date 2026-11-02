@@ -90,6 +90,5 @@ export type EnginesMatch<TParams extends RouteValues> = EngineMatch<TParams>[];
 export interface Route<TParams extends RouteValues> {
   q: TParams;
   reverse: (req: { [K in keyof TParams]: string | number | boolean }) =>
-    | string
-    | false;
+    string | false;
 }

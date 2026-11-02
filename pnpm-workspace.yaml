@@ -2,3 +2,6 @@ packages:
   - 'packages/*'
 allowBuilds:
   sharp: true
+overrides:
+  # Fix glob cancellation and minimatch denial-of-service advisories.
+  '@fastify/static>glob': ^14.0.3
