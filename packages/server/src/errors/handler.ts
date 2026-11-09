@@ -27,7 +27,11 @@ function apiErrorHandler(error: Error, reply: FastifyReply) {
       error: {
         code: code,
         name: error.name,
-        message: error.message,
+        message:
+          error instanceof TxtDotError ||
+          getFastifyError(error)?.statusCode === 400
+            ? error.message
+            : 'Upstream request failed',
       },
     });
   }
@@ -65,6 +69,6 @@ function htmlErrorHandler(error: Error, reply: FastifyReply, url: string) {
   return reply.code(500).view('/templates/error.ejs', {
     url,
     code: 500,
-    description: `${error.name}: ${error.message}`,
+    description: 'Upstream request failed',
   });
 }
