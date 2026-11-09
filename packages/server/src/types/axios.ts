@@ -1,11 +1,16 @@
 import origAxios, { CreateAxiosDefaults } from 'axios';
-import { isLocalResource, isLocalResourceURL } from '../utils/islocal';
-import { LocalResourceError } from '../errors/main';
+import { checkHostname, checkProtocol, safeLookup } from '../utils/blockLocal';
+import http from 'node:http';
+import https from 'node:https';
+
+const httpAgent = new http.Agent({ lookup: safeLookup });
+const httpsAgent = new https.Agent({ lookup: safeLookup });
 
 const config: CreateAxiosDefaults<any> = {
   headers: {
     'User-Agent':
-      'Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0',
+      'Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0',
+    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'Sec-Fetch-Dest': 'document',
     'Sec-Fetch-Mode': 'navigate',
     'Sec-Fetch-Site': 'same-origin',
@@ -14,24 +19,27 @@ const config: CreateAxiosDefaults<any> = {
   responseType: 'stream',
 };
 
-const axios = origAxios.create(config);
+const axios = origAxios.create({
+  ...config,
+  proxy: false,
 
-axios.interceptors.response.use(
-  (response) => {
-    if (isLocalResource(response.request.socket.remoteAddress)) {
-      throw new LocalResourceError();
-    }
+  httpAgent,
+  httpsAgent,
 
-    return response;
+  beforeRedirect(options) {
+    checkProtocol(options.protocol);
+    checkHostname(options.hostname);
   },
-  async (error) => {
-    if (await isLocalResourceURL(new URL(error.config?.url))) {
-      throw new LocalResourceError();
-    }
+});
 
-    throw error;
-  }
-);
+axios.interceptors.request.use((config) => {
+  const url = new URL(config.url!, config.baseURL);
+
+  checkProtocol(url.protocol);
+  checkHostname(url.hostname);
+
+  return config;
+});
 
 /**
  * Modified axios for blocking local resources
