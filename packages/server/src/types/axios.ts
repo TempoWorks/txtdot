@@ -2,7 +2,6 @@ import origAxios, { CreateAxiosDefaults } from 'axios';
 import { checkHostname, checkProtocol, safeLookup } from '../utils/blockLocal';
 import http from 'node:http';
 import https from 'node:https';
-import { LocalResourceError } from '../errors/main';
 
 const httpAgent = new http.Agent({ lookup: safeLookup });
 const httpsAgent = new https.Agent({ lookup: safeLookup });
@@ -40,23 +39,6 @@ axios.interceptors.request.use((config) => {
   checkHostname(url.hostname);
 
   return config;
-});
-
-axios.interceptors.response.use(undefined, (error: unknown) => {
-  const seen = new Set<Error>();
-  let cause = error;
-
-  // Axios and follow-redirects wrap errors from lookup and redirect hooks.
-  while (cause instanceof Error && !seen.has(cause)) {
-    if (cause instanceof LocalResourceError) {
-      throw cause;
-    }
-
-    seen.add(cause);
-    cause = (cause as Error & { cause?: unknown }).cause;
-  }
-
-  throw error;
 });
 
 /**
