@@ -21,6 +21,7 @@ const blockedIPv4 = [
   '240.0.0.0/4',
 ];
 
+// Private ranges inside 2000::/3
 const blockedIPv6Global = [
   '2001::/23',
   '2001:db8::/32',
@@ -37,6 +38,9 @@ export function isLocalResource(address: string): boolean {
   }
 
   if (family === 6) {
+    // Currently, public IPv6 are allocated only from 2000::/3.
+    // But this prefix contains a couple of private subnets too
+    // that we do not want to proxy.
     if (
       ipRangeCheck(address, '2000::/3') &&
       !ipRangeCheck(address, blockedIPv6Global)
@@ -45,7 +49,6 @@ export function isLocalResource(address: string): boolean {
     }
   }
 
-  // Fail closed for invalid addresses
   return true;
 }
 
