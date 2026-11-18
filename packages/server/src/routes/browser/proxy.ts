@@ -6,6 +6,13 @@ import { UnsupportedMimetypeError } from '../../errors/main';
 import config from '../../config';
 
 export default async function proxyRoute(fastify: FastifyInstance) {
+  // Prevent proxied content from executing scripts
+  // in the txtdot origin.
+  fastify.addHook('onRequest', async (_request, reply) => {
+    reply.header('Content-Security-Policy', 'sandbox');
+    reply.header('X-Content-Type-Options', 'nosniff');
+  });
+
   fastify.get<IProxySchema>(
     '/proxy',
     { schema: ProxySchema },
