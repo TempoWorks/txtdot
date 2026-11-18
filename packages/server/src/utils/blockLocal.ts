@@ -40,8 +40,9 @@ export function isLocalResource(address: string): boolean {
     if (
       ipRangeCheck(address, '2000::/3') &&
       !ipRangeCheck(address, blockedIPv6Global)
-    )
+    ) {
       return false;
+    }
   }
 
   // Fail closed for invalid addresses
